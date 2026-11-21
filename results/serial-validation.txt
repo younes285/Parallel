@@ -1,0 +1,29 @@
+Test project /home/moyounes/heat-mpi/build
+    Start 1: grid
+1/6 Test #1: grid .............................   Passed    0.00 sec
+    Start 2: simulation_cases
+2/6 Test #2: simulation_cases .................   Passed    0.00 sec
+    Start 3: heat_step
+3/6 Test #3: heat_step ........................   Passed    0.00 sec
+    Start 4: serial_simulation
+4/6 Test #4: serial_simulation ................   Passed    0.00 sec
+    Start 5: verification
+5/6 Test #5: verification .....................   Passed    0.00 sec
+    Start 6: cli
+6/6 Test #6: cli ..............................   Passed    0.14 sec
+
+100% tests passed out of 6
+
+Total Test time (real) =   0.17 sec
+
+Serial fields, CLI summary, and binary reproducibility: PASS
+
+   N            h   steps        err_inf         err_l2    p_obs
+  16   0.06250000      64  1.6633705e-03  8.3168525e-04        —
+  32   0.03125000     256  4.1418243e-04  2.0709121e-04   2.0058
+  64   0.01562500    1024  1.0344249e-04  5.1721244e-05   2.0014
+ 128   0.00781250    4096  2.5854187e-05  1.2927094e-05   2.0004
+ 256   0.00390625   16384  6.4631447e-06  3.2315724e-06   2.0001
+CSV: /home/moyounes/heat-mpi/results/convergence.csv
+Plot: /home/moyounes/heat-mpi/plots/convergence.png
+Instability: PASS (mode amplification -1.094944, peak 75.575093)
