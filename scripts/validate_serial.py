@@ -90,7 +90,7 @@ def check_fields(heat, directory):
 
 def check_instability(executable):
     path = ROOT / "results" / "instability.bin"
-    run(executable, path)
+    run(executable, path, ROOT / "results" / "instability.csv")
     grid = load_field(path, 32)
     angle = np.pi * 31 / 32
     amplification = 1 - 4 * 0.2625 + 4 * 0.2625 * np.cos(angle)

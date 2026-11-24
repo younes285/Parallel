@@ -70,14 +70,15 @@ Configuration parse_arguments(int argc, char* argv[]) {
     if (decomp == "strips" || decomp == "blocks") {
         throw std::invalid_argument(std::string(decomp) + " decomposition is not implemented yet");
     }
-    if (!decomp.empty() && decomp != "serial") {
-        throw std::invalid_argument("--decomp must be serial");
+    if (!decomp.empty() && decomp != "serial" && decomp != "1d" && decomp != "2d") {
+        throw std::invalid_argument("--decomp must be serial, 1d, or 2d");
     }
 
     Configuration config{parse_case(options.at("--case")),
                          parse_number<int>(options.at("--N"), "--N"),
                          parse_number<double>(options.at("--r"), "--r"),
-                         0, std::string(options.at("--out"))};
+                         0, std::string(options.at("--out")), decomp == "1d" ? Decomposition::Strips :
+                         decomp == "2d" ? Decomposition::Blocks : Decomposition::Serial};
     if (config.N <= 1) {
         throw std::invalid_argument("--N must be greater than 1");
     }

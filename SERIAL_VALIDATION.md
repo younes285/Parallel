@@ -21,7 +21,17 @@ The Release build passed Part 1 validation. The full Checkpoint C1 also requires
 
 The field checks also verified reflection symmetry, the maximum principle and approach to steady state for both hot-edge cases. The insulated-edge conservation check in §7.5 requires Neumann boundaries, outside the three specified Dirichlet cases.
 
+The November 24, 2026 review reran all six CTest tests and the full validation script in a fresh Release build. Each 128-interval field contained 133,128 bytes and produced a valid PNG. Center temperatures were 0.0000239398048 for Case 1 at 500 steps, 0.0000119699024 and 0.4271900552 for Case 2 at 500 and 10,000 steps, and 0.8864885784 for Case V at 500 steps. An asymmetric fixture also confirmed that the visualizer preserves row order, places the first row at the bottom, and uses the fixed 0–1 color scale.
+
 ## Task 6.7 experiment
+
+With CMake tests enabled, build the `instability_experiment` target and run it from the repository root:
+
+```sh
+./build/instability_experiment results/instability.bin results/instability.csv
+```
+
+The CSV records the maximum absolute temperature at iteration 0 and every 20 steps through iteration 200.
 
 The test-build executable seeds a zero-boundary grid with a perturbation of peak amplitude `1e-6` in the highest-frequency Dirichlet sine mode on both axes. Its mode indices are `(31,31)` on a 32-interval grid. The production Case V starts with the lowest sine mode, so it does not directly seed the mode that grows fastest. The separate experiment uses the same stencil at `r = 0.2625`, 5% above the stability bound. The normal CLI rejects this value.
 
@@ -31,5 +41,7 @@ The chosen mode alternates sign between neighboring nodes in each coordinate. It
 
 - C1 serial convergence passed. VM hostname and hello-world runs, same-VM and cross-VM latency and bandwidth with direct or DERP routing, and the written numerical exercises were outside this validation.
 - Parts 2 and 3 require MPI strip and block decomposition, halo exchanges, and byte-for-byte agreement with the serial field. Part 4 covers performance and scaling. Part 5 is optional CUDA acceleration.
+- The CLI, output, and visualization already sit outside the stepping loop. The current grid and stencil assume a full square domain. For strips, define rank-owned rows, ghost rows, and global row offsets before adapting the traversal. Keep the stencil arithmetic and global row-major file layout for byte-for-byte comparison with the serial field. Blocks will also need local rectangular dimensions and column halos.
+- Some earlier AI logs lack the metadata requested in Section 12. Preserve their existing entries and record the full metadata for new interactions. Completeness of interactions outside the available logs has not been verified.
 
 Reproduce the evidence with `python3 scripts/validate_serial.py` after a CMake build with tests enabled. The [validation transcript](results/serial-validation.txt) records the automated results.
